@@ -1,7 +1,5 @@
 package com.example.bankingsystem.core.utilities.exchange;
 
-import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,21 +18,21 @@ public class CollectApiCurrencyExchange {
 	private String contentType = "application/json";
 	private String authorizationKey = "apikey 2nQdEnX6qpUmaoIT9WPANc:4XK9FD3scr56zboC47Zmp8";
 	private String currencyExchangeUrl = "https://api.collectapi.com/economy/exchange?";
-	private String goldPricesUrl = "https://api.collectapi.com/economy/goldPrice"; 
+	private String goldPricesUrl = "https://api.collectapi.com/economy/goldPrice";
 	private HttpEntity<?> requestEntity;
-	
+
 	@Autowired
 	public CollectApiCurrencyExchange() {
-		//Default Authorization Settings
+		// Default Authorization Settings
 		client = new RestTemplate();
 		headers = new HttpHeaders();
-		headers.add("content-type",contentType);
-		headers.add("authorization",authorizationKey);
+		headers.add("content-type", contentType);
+		headers.add("authorization", authorizationKey);
 		requestEntity = new HttpEntity<>(headers);
 	}
-	
+
 	public int exchangeCurrencies(int amount, String type, String exchangedType) {
-		String url =  currencyExchangeUrl + "int=" + amount + "&to=" + exchangedType + "&base=" + type;
+		String url = currencyExchangeUrl + "int=" + amount + "&to=" + exchangedType + "&base=" + type;
 		HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 		ResponseEntity<String> response = client.exchange(url, HttpMethod.GET, requestEntity, String.class);
 		String responseBody = response.getBody();
@@ -44,18 +42,16 @@ public class CollectApiCurrencyExchange {
 			JsonNode node = objectMapper.readTree(responseBody);
 			JsonNode resultNode = node.get("result");
 			JsonNode dataNode = resultNode.get("data");
-			for(JsonNode value : dataNode) {
+			for (JsonNode value : dataNode) {
 				exchangedAmount = value.get("calculated").intValue();
 				return exchangedAmount;
 			}
 			return (Integer) null;
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Hata");
 			return (Integer) null;
 		}
 	}
-	
+
 	public int getGramGoldPriceInTRY(String priceType) {
 		HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 		ResponseEntity<String> response = client.exchange(goldPricesUrl, HttpMethod.GET, requestEntity, String.class);
@@ -64,15 +60,15 @@ public class CollectApiCurrencyExchange {
 		try {
 			JsonNode node = objectMapper.readTree(responseBody);
 			JsonNode resultNode = node.get("result");
-			for(JsonNode goldNode : resultNode) {
+			for (JsonNode goldNode : resultNode) {
 				String name = goldNode.get("name").toString();
-				if(name.contains("Gram Altın")) return goldNode.get(priceType).intValue();
+				if (name.contains("Gram Altın"))
+					return goldNode.get(priceType).intValue();
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			return (Integer) null;
 		}
 		return (Integer) null;
 	}
-	
+
 }

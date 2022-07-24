@@ -11,4 +11,3 @@ public class AccountDepositMoneyRequest {
 		this.amount = amount;
 	}
 }
-

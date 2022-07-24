@@ -6,7 +6,7 @@ public class AccountMoneyTransferResponse {
 	public AccountMoneyTransferResponse(String message) {
 		this.message = message;
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}

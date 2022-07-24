@@ -17,9 +17,10 @@ public class KafkaAdminConfiguration {
 		configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
 		return new KafkaAdmin(configs);
 	}
+
 	@Bean
 	public NewTopic transferTopic() {
 		return new NewTopic("logs", 1, (short) 1);
 	}
-	
+
 }

@@ -13,5 +13,5 @@ public class AccountDeleteResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
-	}	
+	}
 }

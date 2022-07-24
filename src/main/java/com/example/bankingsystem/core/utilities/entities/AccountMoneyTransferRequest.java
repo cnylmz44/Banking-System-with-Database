@@ -10,5 +10,5 @@ public class AccountMoneyTransferRequest extends AccountDepositMoneyRequest {
 	public void setTransferredAccountNumber(String transferredAccountNumber) {
 		this.transferredAccountNumber = transferredAccountNumber;
 	}
-	
+
 }
